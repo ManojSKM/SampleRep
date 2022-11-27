@@ -1,0 +1,147 @@
+Selenium Python Practice :
+--------------------------
+Example :
+---------
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.common.by import By
+from webdriver_manager.chrome import ChromeDriverManager
+
+driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+driver.get("https://www.google.com/")
+print(driver.title)
+print(driver.current_url)
+driver.get("https://www.amazon.com/")
+print(driver.title)
+print(driver.current_url)
+driver.execute_script("window.scrollBy(0, document.body.height)")
+#value = driver.execute_script("return window.pageYOffset;")
+driver.find_element(By.XPATH, "//a[contains(@href, 'Aveeno')]").click()
+
+Output :
+--------
+"C:\Users\Manoj S K\AppData\Local\Programs\Python\Python310\python.exe" "H:/Selenium Python Practice/Test.py"
+[WDM] - ====== WebDriver manager ======
+
+[WDM] - Current google-chrome version is 107.0.5304
+[WDM] - Get LATEST chromedriver version for 107.0.5304 google-chrome
+[WDM] - Driver [C:\Users\Manoj S K\.wdm\drivers\chromedriver\win32\107.0.5304.62\chromedriver.exe] found in cache
+Google
+https://www.google.com/
+Amazon.com. Spend less. Smile more.
+https://www.amazon.com/
+
+Process finished with exit code 0
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Example : Multiple Window Handles
+---------------------------------
+import time
+
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+
+serv_obj = Service("H:\\New Python Related Starting From Beginnig\\SDET Folders\\Selenium Folders\\Browser Drivers\\chromedriver_win32\\chromedriver.exe")
+driver = webdriver.Chrome(service=serv_obj)
+driver.get("https://testautomationpractice.blogspot.com/")
+driver.maximize_window()
+# print(driver.title)
+# print(driver.current_url)
+search_text = driver.find_element(By.ID, "Wikipedia1_wikipedia-search-input")
+search_text.send_keys("selenium")
+search_icon = driver.find_element(By.XPATH, "//input[@type='submit']")
+search_icon.click()
+time.sleep(5)
+links = driver.find_elements(By.XPATH, "//div[@id='Wikipedia1_wikipedia-search-results']//a")
+for link in links:
+    link.click()
+windowIDs = driver.window_handles
+for win_id in windowIDs:
+    driver.switch_to.window(win_id)
+    #if driver.title == "Selenium dioxide - Wikipedia":
+    print(driver.title)
+    print(win_id)
+    #driver.close()
+driver.quit()
+
+Output :
+--------
+"C:\Users\Manoj S K\AppData\Local\Programs\Python\Python310\python.exe" "H:/Selenium Python Practice/Test.py"
+CDwindow-5812BDDD299E5CA9CED71814B34B12BE
+Automation Testing Practice
+CDwindow-4CCDD636787F3A2087942E0D2CBCBB09
+Selenium disulfide - Wikipedia
+CDwindow-9B47FEE72C829C97ACC24DFCE9B95D4F
+Selenium (software) - Wikipedia
+CDwindow-65F8AC6299B4F7704F7E16D80479C033
+Selenium in biology - Wikipedia
+CDwindow-904AB83A4A8500347B979F571FCB274E
+Selenium - Wikipedia
+CDwindow-A29BD2C95F8EBAD69E70F1878ECE9DDB
+Selenium dioxide - Wikipedia
+
+Process finished with exit code 0
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Example : Alerts
+----------------
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.common.by import By
+from webdriver_manager.chrome import ChromeDriverManager
+
+driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+driver.get("https://testautomationpractice.blogspot.com/")
+driver.maximize_window()
+print(driver.title)
+print(driver.current_url)
+driver.find_element(By.XPATH, "//button[text()='Click Me']").click()
+alert_window = driver.switch_to.alert
+print(alert_window.text)
+alert_window.accept()
+driver.quit()
+
+Output :
+--------
+"C:\Users\Manoj S K\AppData\Local\Programs\Python\Python310\python.exe" "H:/Selenium Python Practice/Test2.py"
+
+[WDM] - ====== WebDriver manager ======
+[WDM] - Current google-chrome version is 107.0.5304
+[WDM] - Get LATEST chromedriver version for 107.0.5304 google-chrome
+[WDM] - Driver [C:\Users\Manoj S K\.wdm\drivers\chromedriver\win32\107.0.5304.62\chromedriver.exe] found in cache
+Automation Testing Practice
+https://testautomationpractice.blogspot.com/
+Press a button!
+
+Process finished with exit code 0
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+To Run Multiple Test Cases in Command Prompt:
+---------------------------------------------
+py.test -v -s
+
+To Run Only Selected Test Cases From Set of Tests:
+--------------------------------------------------
+py.test test_Test2.py -v -s
+
+We can use regular expression -k with meaningful method name -v -s, for example
+
+py.test -k CreditCard -v -s -> It should Run only the method name it contains CreditCard
+
+To run only smoke test, py.test -m smoke or sanity -v -s
+
+@pytest.mark.smoke
+@pytest.mark.sanity
+@pytest.mark.skip
+@pytest.mark.xfail -> this command just run but not reporting
+
+
+
+
+
+
+
+
+
+
+
+
+
